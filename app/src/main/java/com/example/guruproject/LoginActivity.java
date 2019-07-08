@@ -1,61 +1,71 @@
 package com.example.guruproject;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.guruproject.database.Database;
+import com.example.guruproject.R;
+import com.example.guruproject.bean.MemberBean;
+import com.example.guruproject.db.FileDB;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText editId;
-    EditText editPassword;
 
-    Database db;
-
-    TextView txtvResult;
+    //멤버변수 자리
+    private EditText mEdtId, mEdtPw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db=Database.getInstance(getApplicationContext());
+        mEdtId = findViewById(R.id.edtId);
+        mEdtPw = findViewById(R.id.edtPw);
+        Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnJoin = findViewById(R.id.btnJoin);
 
-        editId = findViewById(R.id.editID);
-        editPassword=findViewById(R.id.editPassword);
+        btnLogin.setOnClickListener(mBtnLoginClick);
+        btnJoin.setOnClickListener(mBtnJoinClick);
 
-        txtvResult=findViewById(R.id.txtvResult);
+    }//end onCreate()
 
-        Button btn_reg=findViewById(R.id.Join);
-        btn_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(), JoinActivity.class);
-                startActivity(intent);
+    //로그인 버튼 클릭 이벤트
+    private View.OnClickListener mBtnLoginClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String memId = mEdtId.getText().toString();
+            String memPw = mEdtPw.getText().toString();
+
+            MemberBean memberBean = FileDB.getFindMember(LoginActivity.this, memId);
+            if(memberBean == null) {
+                Toast.makeText(LoginActivity.this, "해당 아이디는 가입이 되어 있지 않습니다.", Toast.LENGTH_LONG).show();
+                return;
             }
-        });
-
-        Button btn_login=findViewById(R.id.LogIn);
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean check = db.checkMember(editId.getText().toString(), editPassword.getText().toString());
-                if(check==true){
-                    txtvResult.setText("체크결과=로그인성공");
-
-                    Intent intent= new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
-                }else{
-                    txtvResult.setText("체크결과=로그인실패");
-                }
+            //패스워드 비교
+            if( TextUtils.equals(memberBean.memPw, memPw) ) {
+                FileDB.setLoginMember(LoginActivity.this, memberBean); //저장
+                //비밀번호 일치
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);
+            } else {
+                Toast.makeText(LoginActivity.this, "패스워드가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                return;
             }
-        });
+        }
+    };
 
-    }
-
+    //회원가입 버튼 클릭 이벤트
+    private View.OnClickListener mBtnJoinClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent ii = new Intent(LoginActivity.this, CameraCapture2Activity.class);
+            startActivity(ii);
+        }
+    };
 }
