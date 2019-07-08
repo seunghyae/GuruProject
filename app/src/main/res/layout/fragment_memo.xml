@@ -5,28 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragmentMemo"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="9">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:text="메모작성"
-        android:textSize="36sp" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <Button
+        android:id="@+id/btnNewMemo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        android:background="#3F51B5"
-        android:textColor="#FFFFFF"
-    </com.google.android.material.tabs.TabLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="새메모 작성" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:layout_height="match_parent"
+    <ListView
+        android:id="@+id/lstMemo"
         android:layout_width="match_parent"
-        android:id="@+id/viewPager">
-    </androidx.viewpager.widget.ViewPager>
+        android:layout_height="0dp"
+        android:layout_weight="10" />
 </LinearLayout>

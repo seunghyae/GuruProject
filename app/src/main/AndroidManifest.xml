@@ -29,17 +29,21 @@
         </provider>
         <!--<activity android:name=".FragmentMemoWrite"></activity>-->
         <!--<activity android:name=".FragmentCamera" />-->
-        <activity android:name=".NewMemoActivity" />
         <!--<activity android:name=".FragmentMember" />-->
         <!--<activity android:name=".FragmentMemo" />-->
-        <activity android:name=".MainActivity" />
-        <activity android:name=".JoinActivity" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity android:name=".JoinActivity" />
+        <activity android:name=".LoginActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".NewMemoActivity">
+
         </activity>
     </application>
 
